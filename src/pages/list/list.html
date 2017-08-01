@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>قائمة الطلبات</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+   <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+<ion-list>
+  <ion-item *ngFor="let order of orders | async|filterBy:{name:term }">
+      <b (click)="showOptions(order)">{{order.name}}</b>
+      <ion-badge  color="danger" item-end>{{order.class}}</ion-badge>
+       <ion-badge item-end>{{order.number}}</ion-badge>
+    </ion-item>
+  </ion-list>
+</ion-content>
+

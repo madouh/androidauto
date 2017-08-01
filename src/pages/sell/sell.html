@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+        <button  (click)="addSales()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    <ion-buttons (click)="gotoHome()" left>
+		<button ion-button navPop icon-only  >
+			<ion-icon  ios="ios-home" md="md-home"></ion-icon>
+		</button>
+	</ion-buttons>
+    <ion-title>مبيعات</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+   <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="filterString"></ion-searchbar>
+
+  <ion-list>
+    <ion-item ion-item *ngFor="let sale of sales| async|filterBy:{name:filterString }" >
+      <b (click)="showOptions(sale)">{{sale.name}}</b>
+        <ion-badge  right>{{sale.number}}*{{sale.price}}</ion-badge>
+        <ion-badge  color="danger" item-end>{{sale.remainder}}</ion-badge>
+        <button (click)="addItemToOrders($event, sale)" ion-button outline item-end icon-left>
+      + للنواقص
+    </button>
+  </ion-item>
+  </ion-list>
+  <!--<div *ngIf="selectedItem" padding>
+    You navigated here from <b>{{selectedItem.name}}</b>
+  </div>-->
+</ion-content>

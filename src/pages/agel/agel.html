@@ -1,0 +1,39 @@
+<!--
+  Generated template for the AgelPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons end>
+        <button  (click)="addAgelOperation()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    <ion-buttons (click)="gotoHome()" left>
+		<button ion-button navPop icon-only  >
+			<ion-icon  ios="ios-home" md="md-home"></ion-icon>
+		</button>
+	</ion-buttons>
+    <ion-title>البيع اﻵجل</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+   <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+  <ion-list>
+    <ion-item ion-item *ngFor="let agel of agels| async|filterBy:{name:term }">
+      <b (click)="showOptions(agel)">{{agel.name}}</b>
+        <ion-badge color="assertive"   right>{{agel.buyer}}</ion-badge>
+        <ion-badge  right>{{agel.number}}</ion-badge>
+        <ion-badge  color="danger" item-end>{{agel.remainder}}</ion-badge>
+        <button (click)="addItemToOrders($event, agel)" ion-button outline item-end icon-left>
+      + للنواقص
+    </button>
+  </ion-item>
+  </ion-list>
+</ion-content>

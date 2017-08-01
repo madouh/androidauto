@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>الرئيسية</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h3>الطيبة لقطع غيار السيارات</h3>
+  
+    <button ion-button block secondary menuToggle>عرض النواقص</button>
+
+  <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+
+  <ion-list>
+    <br>
+    <h3 center>قائمة المبيعات</h3><br>
+    <ion-item *ngFor="let order of orders | async|filterBy:{name:term }">
+      <b (click)="showOptions(order)">{{order.name}}</b>
+      <ion-badge item-end>{{order.number}}</ion-badge>
+      <ion-badge item-end>{{order.orderDate}}</ion-badge>
+    </ion-item>
+  </ion-list>
+  <button ion-button (click)="vibrate()">Vibrate ME </button>
+
+
+</ion-content>
