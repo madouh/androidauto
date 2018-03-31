@@ -1,9 +1,3 @@
-<!--
-  Generated template for the BudgetPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -12,24 +6,23 @@
           <ion-icon name="add"></ion-icon>
         </button>
       </ion-buttons>
-    <ion-buttons (click)="gotoHome()" left>
-		<button ion-button navPop icon-only  >
-			<ion-icon  ios="ios-home" md="md-home"></ion-icon>
-		</button>
-	</ion-buttons>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>اليومية</ion-title>
   </ion-navbar>
 
 </ion-header>
 <ion-content padding>
-  <br>
-  <input  type="text" [(ngModel)]="term">
+  <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+   <br>
+<ion-searchbar  [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
 
 <ion-list>
-  <ion-item  *ngFor="let item of budget | async">
-    
+  <ion-item  *ngFor="let item of budget | async|filterBy:{details:term }">
       <b (click)="showOptions(item)">{{item.mony}}</b>
        <ion-badge item-end>{{item.details}}</ion-badge>
+       <ion-badge  color="danger"  item-end>{{item.itemDate}}</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

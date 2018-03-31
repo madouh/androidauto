@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-navbar>
+     <ion-buttons end>
+        <button *ngIf="invoicedate && provider" (click)="AddItemToInvoice()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>فاتورة جديدة</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+  <span ion-datepicker  (ionChanged)="setDate($event);"   full="true" calendar="true" clear class="ScheduleDate">
+        <span> <button  ion-button outline> <b *ngIf="invoicedate">التاريخ: {{invoicedate.toLocaleDateString()}}</b><b *ngIf="!invoicedate">  تاريخ الفاتورة اولاً</b></button> </span>
+    </span>
+   
+      </ion-item>
+
+		
+<ion-item  *ngIf="!provider">
+  <ion-label> <b *ngIf="provider">{{provider.providername}}</b><b *ngIf="!provider">اسم المورد ثانيا</b>ا</ion-label> 
+  <ion-select [(ngModel)]="provider">
+
+    <ion-option   *ngFor="let provider of providers | async" ><b>{{provider.name}}</b></ion-option>
+    
+  </ion-select>
+</ion-item>
+ <br>
+<h1 ></h1>
+   <ion-grid>
+     
+      <ion-item color="light" >  
+             <ion-row> 
+                  <ion-col  text-center><b>المجموع : {{theSumOfInvoice}}</b></ion-col>
+                  <ion-col  text-center><b>المورد : {{provider}}</b></ion-col>
+                  <ion-col  text-center><b>التاريخ : <b  *ngIf="invoicedate">{{invoicedate.toLocaleDateString()}}</b></b></ion-col>
+             </ion-row>
+      </ion-item>
+      <ion-item color="primary" >  
+             <ion-row> 
+                  <ion-col  text-center><b>الصنف</b></ion-col>
+                  <ion-col  text-center><b>العدد</b></ion-col>
+                  <ion-col  text-center><b>السعر</b></ion-col>
+                  <ion-col  text-center><b>المجموع</b></ion-col>
+             </ion-row>
+      </ion-item>
+      <ion-list>
+        
+      <ion-item  color="light"  *ngFor="let invoiceitem of invoice | async" class="item-balanced">
+        <ion-row  lang="ar" dir="rtl" >
+                    <ion-col (click)="showOptions(invoiceitem)" text-center><b>{{invoiceitem.name}}</b></ion-col>
+                    <ion-col  text-center><b>{{invoiceitem.num}}</b></ion-col>
+                    <ion-col  text-center><b>{{invoiceitem.price}}</b></ion-col>
+                    <ion-col  text-center><b>{{invoiceitem.num*invoiceitem.price}}</b></ion-col>
+        </ion-row> 
+    </ion-item>
+      </ion-list>
+      <ion-item *ngIf="provider&&theSumOfInvoice>0"    color="primary" >  
+             <ion-row> 
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b>المجموع</b></ion-col>
+                  <ion-col  text-center><b> {{theSumOfInvoice}}</b></ion-col>  
+             </ion-row>
+      </ion-item>
+             <ion-row  *ngIf="provider&&theSumOfInvoice>0" > 
+                <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b>المدفوع</b></ion-col>
+                  <ion-col  text-center>
+                        <ion-input text-center	 (ionChange)="addPaid()"  ng-class="inputs"  name="paid" [(ngModel)]="paid"></ion-input>
+                  </ion-col>
+          </ion-row>
+           <ion-row *ngIf="provider"> 
+                <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b>حساب سابق</b></ion-col>
+                  <ion-col  text-center><b>{{lastdept+deposite}}</b></ion-col>  
+          </ion-row>
+      <ion-item *ngIf="provider&&theSumOfInvoice>0"  color="primary" >
+          <ion-row > 
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b>الباقي</b></ion-col>
+                  <ion-col  text-center><b>{{theSumOfInvoice-paid+ lastdept+deposite}}</b></ion-col>  
+          </ion-row>
+      </ion-item>
+</ion-grid>
+
+
+</ion-content>

@@ -5,7 +5,13 @@ import {HomePage} from '../../pages/home/home';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { ActionSheetController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
-
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AfoListObservable,
+  AfoObjectObservable,
+  AngularFireOfflineDatabase } from 'angularfire2-offline/database';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { Platform } from 'ionic-angular';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 @Component({
   selector: 'page-japan',
@@ -13,11 +19,36 @@ import { AlertController } from 'ionic-angular';
 })
 export class JapanPage {
 
-    term:string
-  orders: FirebaseListObservable<any>;
+  term:string
+  orders:  AfoListObservable<any[]>;
+  admins: AfoListObservable<any[]>;
+   editor:string;
+   notifications:  AfoListObservable<any[]>;
 
-  constructor(public alertCtrl: AlertController,af: AngularFireDatabase,public actionSheetCtrl: ActionSheetController,public navCtrl: NavController, public navParams: NavParams) {
-    this.orders = af.list('/orders'); 
+  constructor(public platform: Platform,private screenOrientation: ScreenOrientation,private localNotifications: LocalNotifications,private afoDatabase:AngularFireOfflineDatabase ,private afAuth:AngularFireAuth,public alertCtrl: AlertController,af: AngularFireDatabase,public actionSheetCtrl: ActionSheetController,public navCtrl: NavController, public navParams: NavParams) {
+    this.orders = this.afoDatabase.list('/orders', {
+      query: {
+        orderByChild: 'class',
+        equalTo: "japan" 
+      }
+    }); 
+         this.notifications = this.afoDatabase.list('/notifications');
+
+    this.admins = this.afoDatabase.list('/admins', {
+      query: {
+        orderByChild: 'uid',
+        equalTo: this.afAuth.auth.currentUser.uid 
+      }
+    }); 
+    
+      // this.admins.forEach(e=>{
+      //   this.editor=e[0].name
+      // })
+   if (this.platform.is('android')) {        
+        this.screenOrientation.unlock();
+
+        // this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY)
+      }
   }
 
   ionViewDidLoad() {
@@ -65,11 +96,13 @@ showAlert() {
       {
         text: 'حفظ',
         handler: data => {
-        if(data.name==""|| data.number==""){
-            console.log(data);
+         if(data.number==""){
+            data.number=0
+        }
+        if(data.name==""){
               let erralert = this.alertCtrl.create({
               title: 'عفواً',
-              subTitle: 'لا يمكن ان يكون اسم الصنف أو العدد خالياً!',
+              subTitle: 'لا يمكن ان يكون اسم الصنف  خالياً!',
               buttons: ['موافق']
             });
           erralert.present();
@@ -77,7 +110,11 @@ showAlert() {
            }
           this.orders.push({
             name: data.name,number:data.number,class:"japan",orderDate:orderDate,orderTime:orderTime
-          });
+          }).then(
+            this.notifications.push({
+            text: data.name,number:data.number,action:"اضافة",class:"ياباني",orderDate:orderDate,orderTime:orderTime
+          })
+          );
         }
       }
     ]
@@ -94,7 +131,7 @@ showAlert() {
         text: 'حذف',
         role: 'destructive',
         handler: () => {
-          this.removeProduct(item.$key);
+          this.removeProduct(item);
         }
       },{
         text: 'تعديل',
@@ -114,6 +151,9 @@ showAlert() {
 }
 /*https://developers.facebook.com/apps/779469925512432/fb-login/settings/*/
 updateProduct(item){
+   var orderDate: String = new Date().toLocaleDateString();
+    var orderTime: String = new Date().toLocaleTimeString();
+  
   let prompt = this.alertCtrl.create({
     title: 'تعديل عملية بيع',
     message: "فضلاً تاكد من صحة البيانات التالية",
@@ -140,17 +180,23 @@ updateProduct(item){
       {
         text: 'حفظ',
         handler: data => {
-           if(data.name==""|| data.number==""){
-                console.log(data);
+            if(data.number==""){
+            data.number=0
+        }
+        if(data.name==""){
                  let erralert = this.alertCtrl.create({
               title: 'عفواً',
-              subTitle: 'لا يمكن ان يكون اسم الصنف أو العدد خالياً!',
+              subTitle: 'لا يمكن ان يكون اسم الصنف  خالياً!',
               buttons: ['موافق']
             });
           erralert.present();
                 return
            }
-          this.orders.update(item.$key ,{name: data.name,number: data.number});
+          this.orders.update(item.$key ,{name: data.name,number: data.number}).then(
+            this.notifications.push({
+            text: data.name,number:data.number,action:"تعديل",class:"ياباني",orderDate:orderDate,orderTime:orderTime
+          })
+          );
         }
       }
     ]
@@ -158,9 +204,14 @@ updateProduct(item){
   prompt.present();
 }
 
-removeProduct(id){
-  console.log(id)
-  this.orders.remove(id);
+removeProduct(item){
+ var orderDate: String = new Date().toLocaleDateString();
+    var orderTime: String = new Date().toLocaleTimeString();
+    this.orders.remove(item.$key).then(
+            this.notifications.push({
+            text: item.name,number:item.number,action:"حذف",class:"ياباني",orderDate:orderDate,orderTime:orderTime
+          })
+          );
 }
 
 }

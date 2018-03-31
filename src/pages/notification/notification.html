@@ -1,0 +1,34 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>الإشعارات</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content padding>
+  <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+   <br>
+
+<ion-searchbar  [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+
+
+<ion-list>
+  <ion-item  *ngFor="let item of notifications | async|filterBy:{text:term }">
+    <b>تم </b>
+      <ion-badge >{{item.action}} </ion-badge>
+
+      <b (click)="showOptions(item)">{{item.text}}</b>
+      <b>في فئة  </b>
+      <b >{{item.class}}</b>
+      <b>في </b>
+       <ion-badge  color="danger"  >{{item.orderTime}}</ion-badge>
+       <ion-badge  color="calm"  >{{item.orderDate}}</ion-badge>
+       <button (click)="removeNotification(item.$key)" ion-button  outline  ><ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+</button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

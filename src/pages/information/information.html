@@ -1,0 +1,27 @@
+
+<ion-header>
+
+  <ion-navbar> 
+    <ion-buttons end>
+        <button  (click)="addInformationOrder()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+   <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>معلومات</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+ <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+   <br>  
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+<ion-list>
+    <ion-item  *ngFor="let information of informations | async|filterBy:{info:term }" >
+      <b (click)="showOptions(information)">{{information.name}}</b>
+       <ion-badge color="dark" item-end>{{information.editor}}</ion-badge>
+       <ion-badge item-end>{{information.info}}</ion-badge>
+    </ion-item>
+  </ion-list>
+</ion-content>

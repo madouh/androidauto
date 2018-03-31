@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+   <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>أساس الدين للموردين</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <br>
+<ion-searchbar  [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+   <ion-grid>
+      <ion-item color="primary" >  
+             <ion-row> 
+                  <ion-col><b>اسم المورد</b></ion-col>
+                  <ion-col  text-center><b>أساس الدين</b></ion-col>
+             </ion-row>
+      </ion-item>
+
+      <ion-item color="light"  *ngFor="let provider of providers | async|filterBy:{name:term }" class="item-balanced">
+        <ion-row  lang="ar" dir="rtl" >
+                    <ion-col (click)="showOptions(provider)"><b>{{provider.name}}</b></ion-col>
+                    <ion-col  text-center><b>{{provider.deposite}}</b></ion-col>
+        </ion-row> 
+    </ion-item>
+  
+</ion-grid>
+</ion-content>

@@ -1,0 +1,44 @@
+<ion-header>
+
+  <ion-navbar>
+     <ion-buttons end>
+        <button  (click)="addBearingInfo()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>معلومات البلي</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+ <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'اكتب المقاس الداخلي'" [(ngModel)]="term"></ion-searchbar>
+
+   <ion-grid>
+      <ion-item color="primary" >  
+             <ion-row> 
+                  <ion-col  text-center><b>رقم البلية</b></ion-col>
+                  <ion-col  text-center><b>الداخلي</b></ion-col>
+                  <ion-col  text-center><b>الخارجي</b></ion-col>
+                  <ion-col  text-center><b>السمك</b></ion-col>
+                  <ion-col  text-center><b>ملاحظات</b></ion-col>  
+             </ion-row>
+      </ion-item>
+
+      <ion-item color="light"  *ngFor="let bearing of bearinginfo | async|filterBy:{inner:term }" class="item-balanced">
+        <ion-row  lang="ar" dir="rtl" >
+                    <ion-col (click)="showOptions(bearing)" text-center><b>{{bearing.no}}</b></ion-col>
+                    <ion-col  text-center><b>{{bearing.inner}}</b></ion-col>
+                    <ion-col  text-center><b>{{bearing.outer}}</b></ion-col>
+                    <ion-col  text-center><b>{{bearing.thickness}}</b></ion-col>
+                    <ion-col  text-center><i>{{bearing.notes}}</i></ion-col>
+        </ion-row> 
+    </ion-item>
+  
+</ion-grid>
+</ion-content>

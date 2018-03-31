@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+   <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>قائمة الفواتير</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+ <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+<ion-list> <ion-item color="primary" >  
+        <ion-row> 
+            <ion-col  text-center><b>اسم المورد</b></ion-col>
+            <ion-col  text-center><b>الدفعة</b></ion-col>
+            <ion-col  text-center><b>التاريخ</b></ion-col>
+        </ion-row>
+    </ion-item>
+    <ion-item  *ngFor="let invoice of invoicestable | async|filterBy:{provider:term }" >
+      <ion-row> 
+            <ion-col (click)="showOptions(invoice,invoice.provider,invoice.paid,invoice.invoicedate)" text-center><b>{{invoice.provider}}</b></ion-col>
+            <ion-col  text-center><b>{{invoice.paid}}</b></ion-col>
+            <ion-col  text-center><b>{{invoice.invoicedate.slice(0,10)}}</b></ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+</ion-content>

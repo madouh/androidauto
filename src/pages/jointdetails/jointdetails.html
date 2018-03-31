@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>يبانات صليبة رقم {{joint.no}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content padding>
+<ion-grid>
+      <ion-item  color="danger"  >  
+        <ion-row>
+                  <ion-col  text-center><b>الكوستبان</b>:</ion-col>
+                  <ion-col  text-center><b>{{joint.kostoban}}</b></ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item  color="primary" >
+        <ion-row>
+                  <ion-col  text-center><b>الطول</b>:</ion-col>
+                  <ion-col  text-center><b>{{joint.length}}</b></ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item  color="secondary" >
+        <ion-row>
+                  <ion-col  text-center><b>نوع التيلة</b>:</ion-col>
+                  <ion-col  text-center><b>{{joint.style}}</b></ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item   color="light">
+        <ion-row>
+                  <ion-col  text-center><b>ملاحظات</b>:</ion-col>  
+                  <ion-col  text-center><b>{{joint.notes}}</b></ion-col>  
+        </ion-row>
+      </ion-item>
+</ion-grid>
+</ion-content>

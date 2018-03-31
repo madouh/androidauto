@@ -8,23 +8,28 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>الطيبة لقطع غيار السيارات</h3>
-  
-    <button ion-button block secondary menuToggle>عرض النواقص</button>
-
+<button block item-end ion-button menuToggle>
+      قوائم الطيبة لقطع غيار السيارات
+ </button>
+    <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
   <br>
+
 <ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
 
   <ion-list>
     <br>
     <h3 center>قائمة المبيعات</h3><br>
-    <ion-item *ngFor="let order of orders | async|filterBy:{name:term }">
-      <b (click)="showOptions(order)">{{order.name}}</b>
-      <ion-badge item-end>{{order.number}}</ion-badge>
-      <ion-badge item-end>{{order.orderDate}}</ion-badge>
+    <ion-item *ngFor="let sale of sales | async|filterBy:{name:term }">
+      <b (click)="showOptions(sale)">{{sale.name}}</b>
+      <ion-badge item-end>{{sale.number}}</ion-badge>
+      <ion-badge item-end>{{sale.orderDate}}</ion-badge>
+      <ion-badge  color="danger" item-end>{{sale.remainder}}</ion-badge>
+        <button (click)="addItemToOrders($event, sale)" ion-button outline item-end icon-left>
+      + للنواقص
+    </button>
     </ion-item>
   </ion-list>
-  <button ion-button (click)="vibrate()">Vibrate ME </button>
+  <!--<button ion-button (click)="vibrate()">Vibrate ME </button>-->
 
 
 </ion-content>

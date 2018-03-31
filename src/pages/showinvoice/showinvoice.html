@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>فاتورة </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+<h1 ></h1>
+   <ion-grid>
+      <ion-item color="light" >  
+             <ion-row> 
+                  <ion-col  text-center><b>المجموع : {{theSumOfInvoice}}</b></ion-col>
+                  <ion-col  text-center><b>المورد : {{provider}}</b></ion-col>
+                  <ion-col  text-center><b>التاريخ : <b>{{date.slice(0,10)}}</b></b></ion-col>
+             </ion-row>
+      </ion-item>
+      <ion-item color="primary" >  
+             <ion-row> 
+                  <ion-col  text-center><b>الصنف</b></ion-col>
+                  <ion-col  text-center><b>العدد</b></ion-col>
+                  <ion-col  text-center><b>السعر</b></ion-col>
+                  <ion-col  text-center><b>المجموع</b></ion-col>
+             </ion-row>
+      </ion-item>
+      <ion-list>
+        
+      <ion-item  color="light"  *ngFor="let invoiceitem of invoice | async" class="item-balanced">
+        <ion-row  lang="ar" dir="rtl" >
+                    <ion-col (click)="showOptions(invoiceitem)" text-center><b>{{invoiceitem.name}}</b></ion-col>
+                    <ion-col  text-center><b>{{invoiceitem.num}}</b></ion-col>
+                    <ion-col  text-center><b>{{invoiceitem.price}}</b></ion-col>
+                    <ion-col  text-center><b>{{invoiceitem.num*invoiceitem.price}}</b></ion-col>
+        </ion-row> 
+    </ion-item>
+      </ion-list>
+      <ion-item  color="primary" >  
+             <ion-row> 
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b>المجموع</b></ion-col>
+                  <ion-col  text-center><b> {{theSumOfInvoice}}</b></ion-col>  
+             </ion-row>
+      </ion-item>
+             <ion-row > 
+                <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b>المدفوع</b></ion-col>
+                  <ion-col  text-center>
+                        <ion-input text-center  ng-class="inputs"  name="paid" [(ngModel)]="paid"></ion-input>
+                  </ion-col>
+          </ion-row>
+      <ion-item  color="primary" >
+          <ion-row > 
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b></b></ion-col>
+                  <ion-col  text-center><b>الباقي</b></ion-col>
+                  <ion-col  text-center><b>{{theSumOfInvoice-paid}}</b></ion-col>  
+          </ion-row>
+      </ion-item>
+</ion-grid>
+</ion-content>

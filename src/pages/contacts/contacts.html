@@ -1,0 +1,47 @@
+
+<ion-header>
+
+  <ion-navbar color="primary"> 
+    <ion-buttons end>
+        <button  (click)="addProviderContact()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+   <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>قائمة الموردين</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+ <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+   <br>  
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+<ion-list>
+    <ion-item  *ngFor="let item of providerContacts | async|filterBy:{name:term }" >
+      <ion-avatar item-start>
+        <ion-icon name="person"></ion-icon>
+      </ion-avatar>
+      <h2>{{item.action}}</h2>
+       <p  (click)="showOptions(item)"  color="dark" item-end >{{item.number}}
+       </p>
+       <h2 (click)="callThisNumber(item.number)"  color="green">{{item.name}}</h2>
+    </ion-item>
+  </ion-list>
+       <!--<ion-item>
+    <ion-label floating>
+      رقم الموبايل
+    </ion-label>
+    <ion-input type="text" [(ngModel)]="number"></ion-input>
+  </ion-item>
+
+<ion-item>
+    <ion-label floating>
+      نص الرسالة 
+    </ion-label>
+    <ion-input type="text" [(ngModel)]="message"></ion-input>
+  </ion-item>
+    <button ion-button (click)="sendSms(number,message)">Send Messaage </button>
+    <button ion-button (click)="callThisNumber(number)">Call This Number </button>-->
+
+</ion-content>

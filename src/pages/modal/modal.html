@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>ModalPage</ion-title>
+  </ion-navbar>
+  <ion-buttons end>
+    <button ion-button (click)="closeModal()">close</button>
+  </ion-buttons>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-item inset>
+      <ion-label floating i18n>اسم الصنف*</ion-label>
+      <ion-input type="text" (ionFocus)="showItem(item)"   (ionChange)="searchWord(item)" [(ngModel)]="item" name="item"  required></ion-input>
+  </ion-item>
+<ion-list *ngIf="showList">
+    <ion-item  *ngFor="let result of resultArray" >
+      <b (click)="bindValue(result.name)">{{result.name}}</b>
+    </ion-item>
+  </ion-list>
+   <ion-item inset>
+      <ion-label floating i18n>العدد *</ion-label>
+      <ion-input type="text" (ionFocus)="controlNumber()"   [(ngModel)]="number" name="number"  required></ion-input>
+  </ion-item>
+<ion-item inset> 
+      <ion-label floating i18n>السعر *</ion-label>
+      <ion-input type="text" (ionFocus)="controlPrice()"  [(ngModel)]="price" name="price"  required></ion-input>
+  </ion-item>
+<!--<ion-list *ngIf="showList">
+    <ion-item *ngFor="let item of items">
+      {{ item.name }}
+    </ion-item>
+  </ion-list>-->
+</ion-content>

@@ -1,0 +1,39 @@
+<ion-content padding>
+<ion-header>
+  <ion-navbar>
+     <ion-buttons end>
+        <button  (click)="addFilterInfo()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>معلومات الفلاتر</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+ <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'اكتب مقاس القلاوظ '" [(ngModel)]="term"></ion-searchbar>
+  <ion-grid>
+      <ion-item color="primary" >  <ion-row> <ion-col  text-center><b>رقم الفلتر</b></ion-col>
+                            <ion-col  text-center><b>القلاوظ</b></ion-col>
+                            <ion-col  text-center><b>مقاس الاستك</b></ion-col>
+                            <ion-col  text-center><b>جاز ام زيت</b></ion-col>
+                            <ion-col  text-center><b>ملاحظات</b></ion-col>  
+                  </ion-row>
+      </ion-item>
+
+      <ion-item color="light"  *ngFor="let filter of filterinfo | async|filterBy:{inner:term }" class="item-balanced">
+        <ion-row  lang="ar" dir="rtl" (click)="showOptions(filter)" >
+                    <ion-col  text-center><b>{{filter.no}}</b></ion-col>
+                    <ion-col  text-center><b>{{filter.inner}}</b></ion-col>
+                    <ion-col  text-center><b>{{filter.outer}}</b></ion-col>
+                    <ion-col  text-center><b>{{filter.usage}}</b></ion-col>
+                    <ion-col  text-center><b>{{filter.notes}}</b></ion-col>
+        </ion-row> 
+    </ion-item>
+  
+</ion-grid>
+</ion-content>

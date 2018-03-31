@@ -3,12 +3,14 @@ import { NavController, NavParams,ActionSheetController } from 'ionic-angular';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AlertController } from 'ionic-angular';
 import {HomePage} from '../../pages/home/home'
-/**
- * Generated class for the AgelPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AfoListObservable,
+  AfoObjectObservable,
+  AngularFireOfflineDatabase } from 'angularfire2-offline/database';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { Platform } from 'ionic-angular';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
+
 
 @Component({
   selector: 'page-agel',
@@ -16,17 +18,35 @@ import {HomePage} from '../../pages/home/home'
 })
 export class AgelPage {
   term:string
-  agels: FirebaseListObservable<any>;
+  agels:  AfoListObservable<any[]>;
+  admins: AfoListObservable<any[]>;
   orderDate: String = new Date().toLocaleDateString();
   orderTime: String = new Date().toLocaleTimeString();
   selectedItem: any;
-  orders: FirebaseListObservable<any>;
+  orders:  AfoListObservable<any[]>;
+  editor:string;
+  notifications:  AfoListObservable<any[]>;
 
-  constructor(public actionSheetCtrl: ActionSheetController,public alertCtrl:AlertController,public navCtrl: NavController,af: AngularFireDatabase, public navParams: NavParams) {
-    this.agels = af.list('/agels');
+  constructor(public platform: Platform,private screenOrientation: ScreenOrientation,private localNotifications: LocalNotifications,private afoDatabase:AngularFireOfflineDatabase ,private afAuth:AngularFireAuth,public actionSheetCtrl: ActionSheetController,public alertCtrl:AlertController,public navCtrl: NavController,af: AngularFireDatabase, public navParams: NavParams) {
+    this.agels = this.afoDatabase.list('/agels');
     this.selectedItem = navParams.get('item');
-    this.orders = af.list('/orders');
+   this.orders = this.afoDatabase.list('/orders'); 
+    this.admins =this.afoDatabase.list('/admins', {
+      query: {
+        orderByChild: 'uid',
+        equalTo: this.afAuth.auth.currentUser.uid 
+      }
+    }); 
+         this.notifications = this.afoDatabase.list('/notifications');
 
+      // this.admins.forEach(e=>{
+      //   this.editor=e[0].name
+      // })
+       if (this.platform.is('android')) {        
+        this.screenOrientation.unlock();
+
+        // this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT_PRIMARY)
+      }
   }
 
 gotoHome(){
@@ -94,6 +114,9 @@ gotoHome(){
   }
 
 addItemToOrders(event, item) {
+  var orderDate: String = new Date().toLocaleDateString();
+    var orderTime: String = new Date().toLocaleTimeString();
+  
     let alert = this.alertCtrl.create();
     alert.setTitle('إضافة للنواقص');
 
@@ -143,7 +166,11 @@ addItemToOrders(event, item) {
            }
         this.orders.push({
             name: item.name,number:item.number,class:data,orderDate:this.orderDate,orderTime:this.orderTime
-          });
+          }).then(
+            this.notifications.push({
+            text: data.buyer,number:data.price,action:"اضافة",class:"آجل",orderDate:orderDate,orderTime:orderTime
+          })
+          );
       }
     });
     alert.present();
@@ -162,7 +189,7 @@ showOptions(item) {
         text: 'حذف',
         role: 'destructive',
         handler: () => {
-          this.removeProduct(item.$key);
+          this.removeProduct(item);
         }
       },{
         text: 'تعديل',
@@ -182,8 +209,11 @@ showOptions(item) {
 }
 /*https://developers.facebook.com/apps/779469925512432/fb-login/settings/*/
 updateProduct(item){
+   var orderDate: String = new Date().toLocaleDateString();
+    var orderTime: String = new Date().toLocaleTimeString();
+  
   let prompt = this.alertCtrl.create({
-    title: 'تعديل عملية بيع',
+    title: ' تعديل عملية بيع آجل',
     message: "فضلاً تاكد من صحة البيانات التالية",
     inputs: [
       {
@@ -201,16 +231,16 @@ updateProduct(item){
         placeholder: 'الثمن',
         value: item.price
       }
-      , {
-        name: 'remainder',
-        placeholder: 'الباقي',
-        value: item.remainder
-      }
-      , {
+      ,{
         name: 'buyer',
         placeholder: 'لحساب',
         value: item.buyer
-      },
+      } 
+      ,{
+        name: 'remainder',
+        placeholder: 'الباقي',
+        value: item.remainder
+      } ,
     ],
     buttons: [
       {
@@ -232,7 +262,11 @@ updateProduct(item){
           erralert.present();
                 return
            }
-          this.agels.update(item.$key ,{name: data.name,price: data.price,number: data.number,remainder:data.remainder,buyer:data.buyer});
+          this.agels.update(item.$key ,{name: data.name,price: data.price,numbernumber: data.number,remainder:data.remainder,buyer:data.buyer}).then(
+            this.notifications.push({
+            text: data.buyer,number:data.price,action:"تعديل",class:"آجل",orderDate:orderDate,orderTime:orderTime
+          })
+          );
 
         }
       }
@@ -241,9 +275,14 @@ updateProduct(item){
   prompt.present();
 }
 
-removeProduct(id){
-  console.log(id)
-  this.agels.remove(id);
+removeProduct(item){
+ var orderDate: String = new Date().toLocaleDateString();
+    var orderTime: String = new Date().toLocaleTimeString();
+    this.agels.remove(item.$key).then(
+            this.notifications.push({
+            text: item.buyer,number:item.price,action:"حذف",class:"آجل",orderDate:orderDate,orderTime:orderTime
+          })
+          );;
 }
 
 

@@ -7,7 +7,8 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-   <br>
+  <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+ <br>
 <ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
 <ion-list>
   <ion-item *ngFor="let order of orders | async|filterBy:{name:term }">

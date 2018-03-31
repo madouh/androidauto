@@ -1,0 +1,26 @@
+
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>تسجيل دخول</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+    <ion-label floating>
+      البريد اﻹلكتروني
+    </ion-label>
+    <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+  </ion-item>
+
+<ion-item>
+    <ion-label floating>
+      كلمة السر 
+    </ion-label>
+    <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+  </ion-item>
+  <button ion-button block (click)="login(user)">دخول</button>
+</ion-content>

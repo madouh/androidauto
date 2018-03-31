@@ -5,17 +5,17 @@
           <ion-icon name="add"></ion-icon>
         </button>
       </ion-buttons>
-    <ion-buttons (click)="gotoHome()" left>
-		<button ion-button navPop icon-only  >
-			<ion-icon  ios="ios-home" md="md-home"></ion-icon>
-		</button>
-	</ion-buttons>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>مبيعات</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
+    <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+
    <br>
-<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="filterString"></ion-searchbar>
+<ion-searchbar  [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="filterString"></ion-searchbar>
 
   <ion-list>
     <ion-item ion-item *ngFor="let sale of sales| async|filterBy:{name:filterString }" >

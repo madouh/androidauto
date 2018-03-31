@@ -7,24 +7,39 @@
           <ion-icon name="add"></ion-icon>
         </button>
       </ion-buttons>
-    <ion-buttons (click)="gotoHome()" left>
-		<button ion-button navPop icon-only  >
-			<ion-icon  ios="ios-home" md="md-home"></ion-icon>
-		</button>
-	</ion-buttons>
+   <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>كماليات</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <br>
+ <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+   <br>  
 <ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
 <ion-list>
-  <div *ngFor="let order of orders | async|filterBy:{name:term }">
-    <ion-item  *ngIf="order.class=='acessoir'" >
+    <ion-item  *ngFor="let order of orders | async|filterBy:{name:term }" >
       <b (click)="showOptions(order)">{{order.name}}</b>
+       <ion-badge color="dark" item-end>{{order.editor}}</ion-badge>
        <ion-badge item-end>{{order.number}}</ion-badge>
-      <!--<p  >{{order.name}}-{{order.number}}-{{order.orderDate}}-{{order.orderTime}}-{{order.class}}</p>-->
     </ion-item>
-  </div>
   </ion-list>
+
+<!--  
+       <ion-item>
+    <ion-label floating>
+      رقم الموبايل
+    </ion-label>
+    <ion-input type="text" [(ngModel)]="number"></ion-input>
+  </ion-item>
+
+<ion-item>
+    <ion-label floating>
+      نص الرسالة 
+    </ion-label>
+    <ion-input type="text" [(ngModel)]="message"></ion-input>
+  </ion-item>
+    <button ion-button (click)="sendSms(number,message)">Send Messaage </button>
+    <button ion-button (click)="callThisNumber(number)">Call This Number </button>-->
+
 </ion-content>

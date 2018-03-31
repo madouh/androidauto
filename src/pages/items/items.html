@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons end>
+        <button  (click)="addItem()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+   <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>اﻷصناف</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+ <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+<ion-list>
+    <ion-item  *ngFor="let item of items | async|filterBy:{name:term }" >
+      <b (click)="showOptions(item)">{{item.name}}</b>
+       <ion-badge item-end>{{item.number}}</ion-badge>
+      <!--<p  >{{order.name}}-{{order.number}}-{{order.orderDate}}-{{order.orderTime}}-{{order.class}}</p>-->
+    </ion-item>
+  </ion-list>
+  <button ion-button (click)="openModal()">Open Modal</button>
+
+</ion-content>

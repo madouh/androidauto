@@ -5,23 +5,21 @@
           <ion-icon name="add"></ion-icon>
         </button>
       </ion-buttons>
-    <ion-buttons (click)="gotoHome()" left>
-		<button ion-button navPop icon-only  >
-			<ion-icon  ios="ios-home" md="md-home"></ion-icon>
-		</button>
-	</ion-buttons>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>نواقص  السيكن</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
+    <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+
  <br>
 <ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
 <ion-list>
-  <div *ngFor="let order of orders | async|filterBy:{name:term }">
-    <ion-item  *ngIf="order.class=='seikien'" >
+    <ion-item  *ngFor="let order of orders | async|filterBy:{name:term }" >
       <b (click)="showOptions(order)">{{order.name}}</b>
        <ion-badge item-end>{{order.number}}</ion-badge>
     </ion-item>
-  </div>
   </ion-list>
 </ion-content>

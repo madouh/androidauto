@@ -1,0 +1,42 @@
+<ion-header>
+
+  <ion-navbar>
+     <ion-buttons end>
+        <button  (click)="addOilsealInfo()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>معلومات اﻷويل سيل</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+ <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'اكتب المقاس الخارجي'" [(ngModel)]="term"></ion-searchbar>
+
+  <ion-grid>
+      <ion-item color="danger" >  <ion-row> <ion-col  text-center><b>مقاس اﻷويل سيل</b></ion-col>
+                            <ion-col  text-center><b>داخلي</b></ion-col>
+                            <ion-col  text-center><b>خارجي</b></ion-col>
+                            <ion-col  text-center><b>السمك</b></ion-col>
+                            <ion-col  text-center><b>ملاحظات</b></ion-col>  
+                  </ion-row>
+      </ion-item>
+
+      <ion-item color="secondary"  *ngFor="let oilseal of oilsealinfo | async|filterBy:{outer:term }" class="item-balanced">
+        <ion-row  lang="ar" dir="rtl" (click)="showOptions(oilseal)" >
+                    <ion-col  text-center><b>{{oilseal.no}}</b></ion-col>
+                    <ion-col  text-center><b>{{oilseal.inner}}</b></ion-col>
+                    <ion-col  text-center><b>{{oilseal.outer}}</b></ion-col>
+                    <ion-col  text-center><b>{{oilseal.thickness}}</b></ion-col>
+                    <ion-col  text-center><b>{{oilseal.notes}}</b></ion-col>
+        </ion-row> 
+    </ion-item>
+  
+</ion-grid>
+</ion-content>

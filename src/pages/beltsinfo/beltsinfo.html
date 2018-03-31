@@ -1,0 +1,42 @@
+<ion-header>
+
+  <ion-navbar>
+     <ion-buttons end>
+        <button  (click)="addBeltInfo()" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>بيانات السيور</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <!--<ion-label *ngIf="editor" > مرحباً بك يا{{" " +editor}}</ion-label>-->
+ <br>
+<ion-searchbar [showCancelButton]="true"  [placeholder]="'بحث'" [(ngModel)]="term"></ion-searchbar>
+
+  <ion-grid>
+      <ion-item color="danger" >  <ion-row> <ion-col  text-center><b>مقاس السير</b></ion-col>
+                            <ion-col  text-center><b>سعر</b></ion-col>
+                            <ion-col  text-center><b>ملاحظات</b></ion-col>
+                            <ion-col  text-center><b>تاريخ التسعير</b></ion-col>
+                            <ion-col  text-center><b>ملاحظات</b></ion-col>  
+                  </ion-row>
+      </ion-item>
+
+      <ion-item color="secondary"  *ngFor="let belt of beltsinfo | async|filterBy:{no:term }"  class="item-balanced">
+        <ion-row  lang="ar" dir="rtl" (click)="showOptions(belt)" >
+                    <ion-col  text-center><b>{{belt.no}}</b></ion-col>
+                    <ion-col  text-center><b>{{belt.inner}}</b></ion-col>
+                    <ion-col  text-center><b>{{belt.outer}}</b></ion-col>
+                    <ion-col  text-center><b>{{belt.thickness}}</b></ion-col>
+                    <ion-col  text-center><b>{{belt.notes}}</b></ion-col>
+        </ion-row> 
+    </ion-item>
+  
+</ion-grid>
+</ion-content>
